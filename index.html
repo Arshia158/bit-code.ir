@@ -1,1 +1,790 @@
-coming soon...
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بیت کد | تیم توسعه نرم‌افزار</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --header-height: 3rem;
+            --bg-color: #0D0D0D;
+            --text-color: #EAEAEA;
+            --text-color-light: #A8A8A8;
+            --accent-color: #9D4EDD;
+            --accent-color-light: #C77DFF;
+            --container-color: #1A1A1A;
+            --body-font: 'Vazirmatn', sans-serif;
+            --big-font-size: 2.5rem;
+            --h1-font-size: 2rem;
+            --h2-font-size: 1.5rem;
+            --h3-font-size: 1.125rem;
+            --normal-font-size: 0.938rem;
+            --z-fixed: 100;
+            --z-modal: 1000;
+        }
+
+        *, ::before, ::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--body-font);
+            font-size: var(--normal-font-size);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, p {
+            margin: 0;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .section {
+            padding: 6rem 0 2rem;
+        }
+
+        .section__title {
+            font-size: var(--h1-font-size);
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .section__subtitle {
+            text-align: center;
+            color: var(--text-color-light);
+            margin-bottom: 3rem;
+        }
+
+        .container {
+            max-width: 1120px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .header {
+            width: 100%;
+            background-color: rgba(13, 13, 13, 0.9);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: var(--z-fixed);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav {
+            height: var(--header-height);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav__logo {
+            font-size: var(--h2-font-size);
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .nav__toggle {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            z-index: var(--z-modal);
+        }
+
+        .nav__menu {
+            display: flex;
+        }
+
+        .nav__item {
+            margin-left: 2rem;
+        }
+
+        .nav__link {
+            transition: color 0.3s;
+        }
+
+        .nav__link:hover {
+            color: var(--accent-color);
+        }
+
+        .home {
+            padding-top: calc(var(--header-height) + 4rem);
+            text-align: center;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .home__bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0D0D0D 0%, #1a0d26 100%);
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .home__container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .home__title {
+            font-size: var(--big-font-size);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+        }
+
+        .home__title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light));
+            border-radius: 3px;
+            animation: expandWidth 1.5s ease-out forwards;
+        }
+
+        @keyframes expandWidth {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100px;
+            }
+        }
+
+        .home__subtitle {
+            font-size: var(--h2-font-size);
+            font-weight: 500;
+            color: var(--text-color-light);
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .home__description {
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 1s ease-out 0.6s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .button:hover::before {
+            left: 100%;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(157, 78, 221, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .services__container {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .services__card {
+            background-color: var(--container-color);
+            padding: 2rem 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            border: 1px solid transparent;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .services__card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        .services__icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .services__title {
+            font-size: var(--h3-font-size);
+            margin-bottom: 0.5rem;
+        }
+
+        .services__description {
+            font-size: var(--normal-font-size);
+            color: var(--text-color-light);
+        }
+
+        .portfolio__container {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .portfolio__item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+
+        .portfolio__img {
+            transition: transform 0.5s;
+        }
+
+        .portfolio__item:hover .portfolio__img {
+            transform: scale(1.1);
+        }
+
+        .portfolio__overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(13, 13, 13, 0.9), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .portfolio__item:hover .portfolio__overlay {
+            opacity: 1;
+        }
+
+        .portfolio__title {
+            font-size: var(--h3-font-size);
+        }
+
+        .team__container {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            text-align: center;
+        }
+
+        .team__img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            object-fit: cover;
+            border: 3px solid var(--accent-color);
+        }
+
+        .team__name {
+            font-size: var(--h3-font-size);
+            margin-bottom: 0.25rem;
+        }
+
+        .team__role {
+            font-size: var(--normal-font-size);
+            color: var(--text-color-light);
+        }
+
+        .contact__container {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .contact__info h3 {
+            font-size: var(--h2-font-size);
+            margin-bottom: 1rem;
+        }
+
+        .contact__description {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact__details p {
+            margin-bottom: 0.5rem;
+        }
+
+        .contact__details i {
+            color: var(--accent-color);
+            margin-left: 0.5rem;
+        }
+
+        .contact__form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact__input {
+            background-color: var(--container-color);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            outline: none;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            color: var(--text-color);
+            font-family: var(--body-font);
+        }
+
+        .contact__input::placeholder {
+            color: var(--text-color-light);
+        }
+
+        .footer {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer__copy {
+            font-size: var(--normal-font-size);
+            color: var(--text-color-light);
+        }
+
+        @media screen and (max-width: 768px) {
+            :root {
+                --big-font-size: 2rem;
+                --h1-font-size: 1.5rem;
+                --h2-font-size: 1.25rem;
+            }
+            
+            .nav__toggle {
+                display: block;
+            }
+
+            .nav__menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background-color: var(--bg-color);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 5rem;
+                transition: right 0.4s;
+                z-index: var(--z-fixed);
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+                overflow-y: auto;
+            }
+
+            .nav__menu.show-menu {
+                right: 0;
+            }
+
+            .nav__item {
+                margin: 1.5rem 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav__link {
+                display: block;
+                padding: 1rem;
+                width: 100%;
+                font-size: 1.2rem;
+            }
+
+            .team__img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .nav__overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: calc(var(--z-fixed) - 1);
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.4s, visibility 0.4s;
+            }
+
+            .nav__overlay.show-overlay {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav container">
+            <a href="#" class="nav__logo">بیت کد</a>
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav__menu" id="nav-menu">
+                <li class="nav__item"><a href="#home" class="nav__link">خانه</a></li>
+                <li class="nav__item"><a href="#services" class="nav__link">خدمات</a></li>
+              <!---  <li class="nav__item"><a href="#portfolio" class="nav__link">نمونه‌کارها</a></li> -->
+                <li class="nav__item"><a href="#team" class="nav__link">تیم</a></li>
+                <li class="nav__item"><a href="#contact" class="nav__link">تماس</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="nav__overlay" id="nav-overlay"></div>
+
+    <main class="main">
+        <section class="home section" id="home">
+            <div class="home__bg"></div>
+            <div class="particles" id="particles"></div>
+            <div class="container home__container">
+                <h1 class="home__title">بیت کد</h1>
+                <p class="home__subtitle">ایده‌های شما، کد ما</p>
+                <p class="home__description">تیمی خلاق و متخصص برای توسعه نرم‌افزار، وب و اپلیکیشن‌های موبایل</p>
+                <a href="#contact" class="button">شروع پروژه</a>
+            </div>
+        </section>
+
+        <section class="services section" id="services">
+            <h2 class="section__title">خدمات ما</h2>
+            <p class="section__subtitle">چه کاری برایتان می‌توانیم انجام دهیم؟</p>
+            
+            <div class="services__container container grid">
+                <div class="services__card">
+                    <i class="fas fa-code services__icon"></i>
+                    <h3 class="services__title">توسعه وب</h3>
+                    <p class="services__description">طراحی و پیاده‌سازی وب‌سایت‌های مدرن و سریع با آخرین تکنولوژی‌ها</p>
+                </div>
+                <div class="services__card">
+                    <i class="fas fa-mobile-alt services__icon"></i>
+                    <h3 class="services__title">وب اپلیکیشن</h3>
+                    <p class="services__description">ساخت وب اپلیکیشن های مختلف با طراحی و سرعت خوب</p>
+                </div>
+                 <div class="services__card">
+                    <i class="fas fa-paint-brush services__icon"></i>
+                    <h3 class="services__title">طراحی UI/UX</h3>
+                    <p class="services__description">طراحی رابط کاربری جذاب و بهینه‌سازی تجربه کاربری برای محصول شما</p>
+                </div>
+            </div>
+        </section>
+
+     <!---   <section class="portfolio section" id="portfolio">
+            <h2 class="section__title">نمونه‌کارها</h2>
+            <p class="section__subtitle">آخرین پروژه‌های ما را ببینید</p>
+
+            <div class="portfolio__container container grid">
+                <div class="portfolio__item">
+                    <img src="https://picsum.photos/seed/project1/400/300.jpg" alt="پروژه ۱" class="portfolio__img">
+                    <div class="portfolio__overlay">
+                        <h3 class="portfolio__title">پروژه فروشگاه آنلاین</h3>
+                    </div>
+                </div>
+                <div class="portfolio__item">
+                    <img src="https://picsum.photos/seed/project2/400/300.jpg" alt="پروژه ۲" class="portfolio__img">
+                    <div class="portfolio__overlay">
+                        <h3 class="portfolio__title">اپلیکیشن مدیریت وظایف</h3>
+                    </div>
+                </div>
+                <div class="portfolio__item">
+                    <img src="https://picsum.photos/seed/project3/400/300.jpg" alt="پروژه ۳" class="portfolio__img">
+                    <div class="portfolio__overlay">
+                        <h3 class="portfolio__title">داشبورد تحلیلی</h3>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+
+        <section class="team section" id="team">
+            <h2 class="section__title">تیم ما</h2>
+            <p class="section__subtitle">افراد پشت این تیم</p>
+            
+            <div class="team__container container grid">
+                <div class="team__member">
+                    <img src="https://s4.uupload.ir/files/95b3f7ec83cc5dd0fe83f3753ebf6866_v6ar_hdn.jpg" alt="عضو تیم ۱" class="team__img">
+                    <h3 class="team__name">ارشیا درستکار</h3>
+                    <p class="team__role">توسعه دهنده فرانت اند</p>
+                </div>
+                <!-- <div class="team__member">
+                    <img src="https://picsum.photos/seed/member2/200/200.jpg" alt="عضو تیم ۲" class="team__img">
+                    <h3 class="team__name">نفر جدید</h3>
+                    <p class="team__role">توضیحات جدید</p>
+                </div> -->
+                <div class="team__member">
+                    <img src="https://s4.uupload.ir/files/95b3f7ec83cc5dd0fe83f3753ebf6866_v6ar_hdn.jpg" alt="عضو تیم ۳" class="team__img">
+                    <h3 class="team__name">میرسینا بنی هاشم</h3>
+                    <p class="team__role">توسعه‌دهنده بک اند</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact section" id="contact">
+            <h2 class="section__title">تماس با ما</h2>
+            <p class="section__subtitle">برای شروع پروژه‌ی بعدی‌تان با ما صحبت کنید</p>
+            
+            <div class="contact__container container grid">
+                <div class="contact__info">
+                    <h3 class="contact__title">بیایید با هم صحبت کنیم</h3>
+                    <p class="contact__description">ایده‌تان را با ما در میان بگذارید تا بهترین راهکار را برایتان پیدا کنیم.</p>
+                    <div class="contact__details">
+                        <p><i class="fas fa-envelope"></i> info@bit-code.ir</p>
+                        <p><i class="fas fa-phone"></i> +۹۸ ۹۱۲ ۳۴۵ ۶۷۸۹</p>
+                    </div>
+                </div>
+                <form class="contact__form" action="https://formspree.io/f/xwpwgwzr" method="POST">
+                    <input type="text" name="name" placeholder="نام و نام خانوادگی" class="contact__input" required>
+                    <input type="email" name="email" placeholder="ایمیل" class="contact__input" required>
+                    <textarea name="message" placeholder="پیام شما" class="contact__input" rows="5" required></textarea>
+                    <button type="submit" class="button">ارسال پیام</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer__copy">&copy; ۲۰۲۵ بیت کد. تمامی حقوق محفوظ است.</p>
+        </div>
+    </footer>
+
+    <script>
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particlesCount = 50;
+            
+            for (let i = 0; i < particlesCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 5 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                
+                const delay = Math.random() * 15;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        window.addEventListener('load', createParticles);
+        
+        const navMenu = document.getElementById('nav-menu'),
+              navToggle = document.getElementById('nav-toggle'),
+              navOverlay = document.getElementById('nav-overlay'),
+              navLinks = document.querySelectorAll('.nav__link')
+
+        if(navToggle) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('show-menu')
+                navOverlay.classList.toggle('show-overlay')
+                
+                const icon = navToggle.querySelector('i')
+                if(navMenu.classList.contains('show-menu')) {
+                    icon.classList.remove('fa-bars')
+                    icon.classList.add('fa-times')
+                } else {
+                    icon.classList.remove('fa-times')
+                    icon.classList.add('fa-bars')
+                }
+            })
+        }
+
+        if(navOverlay) {
+            navOverlay.addEventListener('click', () => {
+                navMenu.classList.remove('show-menu')
+                navOverlay.classList.remove('show-overlay')
+                
+                const icon = navToggle.querySelector('i')
+                icon.classList.remove('fa-times')
+                icon.classList.add('fa-bars')
+            })
+        }
+
+        function linkAction() {
+            navMenu.classList.remove('show-menu')
+            navOverlay.classList.remove('show-overlay')
+            
+            const icon = navToggle.querySelector('i')
+            icon.classList.remove('fa-times')
+            icon.classList.add('fa-bars')
+        }
+
+        navLinks.forEach(n => n.addEventListener('click', linkAction))
+        
+        if ('ontouchstart' in window) {
+            navToggle.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                this.click();
+            }, { passive: false });
+            
+            navLinks.forEach(link => {
+                link.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    this.click();
+                }, { passive: false });
+            });
+        }
+
+        const contactForm = document.querySelector('.contact__form');
+        if(contactForm) {
+            contactForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.textContent;
+                
+                submitButton.textContent = 'در حال ارسال...';
+                submitButton.disabled = true;
+                
+                try {
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        submitButton.textContent = 'پیام با موفقیت ارسال شد!';
+                        this.reset();
+                        
+                        setTimeout(() => {
+                            submitButton.textContent = originalButtonText;
+                            submitButton.disabled = false;
+                        }, 3000);
+                    } else {
+                        submitButton.textContent = 'خطا در ارسال، لطفا دوباره تلاش کنید';
+                        submitButton.disabled = false;
+                        
+                        setTimeout(() => {
+                            submitButton.textContent = originalButtonText;
+                        }, 3000);
+                    }
+                } catch (error) {
+                    submitButton.textContent = 'خطا در ارسال، لطفا دوباره تلاش کنید';
+                    submitButton.disabled = false;
+                    
+                    setTimeout(() => {
+                        submitButton.textContent = originalButtonText;
+                    }, 3000);
+                }
+            });
+        }
+    </script>
+</body>
+</htm
