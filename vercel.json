@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/form",
+      "destination": "https://survey.porsline.ir/s/5lZOA5YN",
+      "statusCode": 302
+    }
+  ]
+}
