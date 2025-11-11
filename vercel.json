@@ -4,6 +4,11 @@
       "source": "/form",
       "destination": "https://survey.porsline.ir/s/5lZOA5YN",
       "statusCode": 302
+    },
+    {
+      "source": "/pezeshkyar",
+      "destination": "https://pezeshkyarapp.vercel.app",
+      "statusCode": 302
     }
   ]
 }
