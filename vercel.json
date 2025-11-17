@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "redirects": [
     {
       "source": "/form",
@@ -8,6 +9,26 @@
     {
       "source": "/pezeshkyar",
       "destination": "https://pezeshkyarapp.vercel.app",
+      "statusCode": 302
+    },
+    {
+      "source": "/api/news",
+      "destination": "https://news.api-sina-free.workers.dev/news",
+      "statusCode": 302
+    },
+    {
+      "source": "/api/captcha",
+      "destination": "https://captcha.api-sina-free.workers.dev/captcha",
+      "statusCode": 302
+    },
+    {
+      "source": "/api/dollar",
+      "destination": "https://dollar.api-sina-free.workers.dev/dollar",
+      "statusCode": 302
+    },
+    {
+      "source": "/api/gold",
+      "destination": "https://gold.api-sina-free.workers.dev/gold",
       "statusCode": 302
     }
   ]
