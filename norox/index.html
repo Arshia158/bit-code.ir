@@ -1,1 +1,801 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NoroX AI</title>
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+body{
+  background:#0b0b0b;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+}
 
+.chat-wrap{
+  width:100%;
+  max-width:900px;
+  height:calc(100vh - 120px);
+  overflow-y:auto;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  margin-bottom:20px;
+  scroll-behavior:smooth;
+}
+.chat-wrap::-webkit-scrollbar{display:none;}
+.chat-wrap{-ms-overflow-style:none;scrollbar-width:none;}
+
+.msg-u{
+  align-self:flex-end;
+  max-width:85%;
+  animation:slideIn 0.25s ease-out;
+  margin-bottom:8px;
+}
+.msg-u .b{
+  background:linear-gradient(135deg,#2563eb,#3b82f6);
+  color:#fff;
+  border-radius:20px 20px 5px 20px;
+  padding:14px 18px;
+  box-shadow:0 2px 12px rgba(37,99,235,0.25);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.1);
+  line-height:1.5;
+  font-size:15px;
+}
+
+.msg-a{
+  align-self:flex-start;
+  max-width:85%;
+  animation:slideIn 0.25s ease-out 0.1s both;
+  margin-bottom:8px;
+}
+.msg-a .b{
+  background:transparent;
+  color:#fff;
+  border-radius:20px 20px 20px 5px;
+  padding:16px;
+  line-height:1.6;
+  font-size:15px;
+}
+
+@keyframes slideIn{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.tools{
+  display:flex;
+  gap:12px;
+  margin-top:16px;
+  padding-top:16px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+.tool{
+  width:32px;
+  height:32px;
+  background:rgba(255,255,255,0.07);
+  border-radius:50%;
+  font-size:14px;
+  color:#94a3b8;
+  cursor:pointer;
+  transition:all 0.2s ease;
+  border:1px solid rgba(255,255,255,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.tool:hover{
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  transform:translateY(-2px);
+}
+
+.time{
+  font-size:11px;
+  color:#64748b;
+  margin-top:4px;
+  text-align:end;
+}
+
+.typing{
+  display:flex;
+  gap:4px;
+  padding:12px 20px;
+  background:rgba(30,41,59,0.8);
+  border-radius:20px;
+  width:fit-content;
+  align-self:flex-start;
+  margin-bottom:8px;
+}
+.dot{
+  width:8px;
+  height:8px;
+  background:#3b82f6;
+  border-radius:50%;
+  animation:bounce 1.4s infinite ease-in-out;
+}
+.dot:nth-child(1){animation-delay:-0.32s;}
+.dot:nth-child(2){animation-delay:-0.16s;}
+@keyframes bounce{
+  0%,80%,100%{transform:scale(0);}
+  40%{transform:scale(1);}
+}
+
+.emoji{
+  font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji";
+  font-size:1.3em;
+  line-height:1.2;
+}
+
+.bar{
+  width:100%;
+  max-width:900px;
+  min-height:90px;
+  background:#0c0c0c;
+  border:2px solid #1b1b1b;
+  border-bottom:none;
+  border-radius:22px 22px 0 0;
+  padding:16px 18px 10px;
+  display:flex;
+  align-items:flex-end;
+  gap:12px;
+  position:relative;
+  z-index:30;
+  transition:min-height 0.2s ease;
+}
+
+.tag{
+  position:absolute;
+  top:6px;
+  right:16px;
+  padding:6px 14px;
+  font-size:12px;
+  font-weight:800;
+  border-radius:50px;
+  background:rgba(70,110,255,0.25);
+  border:1px solid rgba(80,140,255,0.65);
+  color:#dbe8ff;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  animation:fade .25s ease;
+}
+@keyframes fade{
+  from{opacity:0;transform:translateY(6px);}
+}
+.tag i{font-size:15px;}
+.tag .x{font-size:16px;cursor:pointer;}
+
+.input-area{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:relative;
+}
+
+.prev{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  position:absolute;
+  bottom:75px;
+  left:12px;
+  padding:8px 12px;
+  background:rgba(0,0,0,0.7);
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.1);
+  animation:slideIn 0.3s ease;
+  backdrop-filter:blur(10px);
+  z-index:40;
+}
+.prev-box{
+  width:50px;
+  height:50px;
+  border-radius:10px;
+  border:1.5px solid #555;
+  overflow:hidden;
+  background:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  flex-shrink:0;
+}
+.prev-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.prev-box .close-prev{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  background:#ef4444;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  color:#fff;
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  border:2px solid #000;
+  z-index:50;
+  transition:all 0.2s ease;
+}
+.prev-box .close-prev:hover{
+  background:#dc2626;
+  transform:scale(1.1);
+}
+
+.txt{
+  width:100%;
+  min-height:70px;
+  max-height:200px;
+  border:none;
+  outline:none;
+  resize:none;
+  background:#0c0c0c;
+  color:#fff;
+  font-size:16px;
+  padding:12px 0;
+  direction:ltr;
+  text-align:left;
+  font-weight:500;
+  overflow-y:auto;
+  line-height:1.5;
+  transition:all 0.2s ease;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+.txt::placeholder{color:#666;font-weight:400;}
+
+.btn-add{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:1.7px solid #555;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+  transition:all 0.2s ease;
+  flex-shrink:0;
+}
+.btn-add:hover{
+  border-color:#666;
+  background:rgba(255,255,255,0.05);
+}
+.btn-add i{color:#fff;font-size:20px;}
+
+.btn-send{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:all 0.2s ease;
+  flex-shrink:0;
+}
+.btn-send:hover{
+  transform:scale(1.05);
+  box-shadow:0 4px 12px rgba(255,255,255,0.2);
+}
+.btn-send:active{transform:scale(0.95);}
+.btn-send i{font-size:25px;color:#000;}
+
+.sheet{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:0;
+  background:#111;
+  border-radius:22px 22px 0 0;
+  transition:height .25s ease;
+  overflow:hidden;
+  z-index:9999;
+}
+.sheet-handle{
+  width:42px;
+  height:5px;
+  background:#555;
+  border-radius:4px;
+  margin:10px auto 16px;
+}
+.sheet-content{
+  padding:14px 22px 40px;
+  overflow-y:auto;
+  height:100%;
+}
+.s-title{
+  color:#9ba7c8;
+  font-size:14px;
+  font-weight:800;
+  margin-bottom:12px;
+  text-transform:uppercase;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-bottom:22px;
+}
+.box{
+  height:86px;
+  background:rgba(255,255,255,0.08);
+  border-radius:16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.box:hover{
+  background:rgba(255,255,255,0.12);
+  transform:translateY(-2px);
+}
+.box i{font-size:24px;color:#fff;}
+.box span{font-size:12px;color:#fff;}
+.list{display:flex;flex-direction:column;gap:8px;}
+.item{
+  padding:10px 12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border-radius:12px;
+  color:#fff;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.item:hover{
+  background:rgba(255,255,255,0.06);
+  transform:translateX(4px);
+}
+.item i{font-size:20px;}
+
+.welcome{
+  text-align:center;
+  padding:30px 20px;
+  animation:fadeIn 0.6s ease-out;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.w-title{
+  font-size:28px;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:12px;
+  line-height:1.3;
+}
+.w-sub{
+  color:#94a3b8;
+  font-size:16px;
+  max-width:500px;
+  margin:0 auto 24px;
+  line-height:1.5;
+}
+.quick{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  max-width:600px;
+  margin:0 auto;
+}
+.sug{
+  padding:10px 16px;
+  background:rgba(255,255,255,0.07);
+  border-radius:12px;
+  color:#e2e8f0;
+  font-size:14px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.sug:hover{
+  background:rgba(255,255,255,0.12);
+  transform:translateY(-2px);
+}
+
+.code{
+  background:rgba(0,0,0,0.3);
+  border-radius:8px;
+  padding:12px;
+  margin:8px 0;
+  border-left:3px solid #3b82f6;
+  font-family:'Courier New',monospace;
+  font-size:13px;
+  overflow-x:auto;
+}
+</style>
+</head>
+<body>
+
+<div id="sheet" class="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-content">
+    <div class="s-title">Media Tools</div>
+    <div class="grid">
+      <div class="box" id="fileBtn"><i class="ri-folder-2-line"></i><span>Files</span></div>
+      <div class="box" id="photoBtn"><i class="ri-image-line"></i><span>Photos</span></div>
+      <div class="box" id="cameraBtn"><i class="ri-camera-2-line"></i><span>Camera</span></div>
+    </div>
+    <div class="s-title">Quick Actions</div>
+    <div class="list">
+      <div class="item" data-t="Create Image" data-i="ri-brush-line"><i class="ri-brush-line"></i><span>Create Image</span></div>
+      <div class="item" data-t="Deep Research" data-i="ri-search-eye-line"><i class="ri-search-eye-line"></i><span>Deep Research</span></div>
+      <div class="item" data-t="Study & Learning" data-i="ri-book-open-line"><i class="ri-book-open-line"></i><span>Study & Learning</span></div>
+    </div>
+  </div>
+</div>
+
+<div id="chat" class="chat-wrap">
+  <div class="welcome">
+    <div class="w-title">Welcome to NoroX AI</div>
+    <div class="w-sub">
+      I'm a professional AI assistant specialized in various topics. Ask me anything or try these:
+    </div>
+    <div class="quick">
+      <div class="sug" data-text="Explain quantum computing in simple terms">Quantum basics</div>
+      <div class="sug" data-text="Write a Python function to reverse a string">Python help</div>
+      <div class="sug" data-text="What are the latest advancements in AI?">AI news</div>
+      <div class="sug" data-text="Help me plan a healthy diet">Health advice</div>
+    </div>
+  </div>
+</div>
+
+<div class="bar">
+  <div id="plus" class="btn-add"><i class="ri-add-line"></i></div>
+  <div class="input-area">
+    <div id="prevCont"></div>
+    <textarea id="txt" class="txt" placeholder="Ask anything..." rows="1"></textarea>
+  </div>
+  <div class="btn-send"><i id="sendIcon" class="ri-arrow-up-line"></i></div>
+</div>
+
+<input type="file" id="filePick" hidden>
+<input type="file" id="photoPick" accept="image/*" hidden>
+<input type="file" id="cameraPick" accept="image/*" capture="environment" hidden>
+
+<script>
+const txt=document.getElementById("txt");
+const bar=document.querySelector(".bar");
+const chat=document.getElementById("chat");
+const sheet=document.getElementById("sheet");
+const prevCont=document.getElementById("prevCont");
+
+let tagEl=null;
+let typingEl=null;
+
+const PROMPT=`You are NoroX AI, a professional AI assistant with deep knowledge across all fields. Provide comprehensive, detailed, and accurate responses. Break down complex topics, use examples, and cite relevant research when available. Maintain professional yet approachable tone.`;
+
+function wrapEmojis(t){
+  return t.replace(
+    /([\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F700}-\u{1F77F}]|[\u{1F900}-\u{1F9FF}]|[\u2600}-\u{26FF}]|[\u{2700}-\u{27BF}])/gu,
+    "<span class='emoji'>$1</span>"
+  );
+}
+
+txt.addEventListener("input",()=>{
+  txt.style.height="auto";
+  txt.style.height=Math.min(txt.scrollHeight,200)+"px";
+});
+
+function rmTag(){
+  if(tagEl){
+    tagEl.remove();
+    tagEl=null;
+    bar.style.minHeight="90px";
+  }
+}
+
+document.querySelectorAll(".item").forEach(i=>{
+  i.addEventListener("click",()=>{
+    let t=i.dataset.t;
+    let ic=i.dataset.i;
+    if(tagEl)tagEl.remove();
+    tagEl=document.createElement("div");
+    tagEl.className="tag";
+    tagEl.innerHTML=`<i class="${ic}"></i>${t}<i class="ri-close-line x"></i>`;
+    bar.appendChild(tagEl);
+    bar.style.minHeight="120px";
+    tagEl.querySelector(".x").onclick=rmTag;
+    sheet.style.height="0px";
+  });
+});
+
+function showPrev(src){
+  prevCont.innerHTML="";
+  const c=document.createElement("div");
+  c.className="prev";
+  c.innerHTML=`
+    <div class="prev-box">
+      <img src="${src}">
+      <div class="close-prev"><i class="ri-close-line"></i></div>
+    </div>
+    <div style="font-size:12px;color:#94a3b8;">Image ready</div>
+  `;
+  prevCont.appendChild(c);
+  c.querySelector(".close-prev").onclick=(e)=>{
+    e.stopPropagation();
+    c.remove();
+  };
+}
+
+const filePick=document.getElementById("filePick");
+const photoPick=document.getElementById("photoPick");
+const cameraPick=document.getElementById("cameraPick");
+
+document.getElementById("fileBtn").onclick=()=>{filePick.click();sheet.style.height="0";};
+document.getElementById("photoBtn").onclick=()=>{photoPick.click();sheet.style.height="0";};
+document.getElementById("cameraBtn").onclick=()=>{cameraPick.click();sheet.style.height="0";};
+
+function handleFile(inp){
+  inp.onchange=()=>{
+    let f=inp.files[0];
+    if(!f)return;
+    let r=new FileReader();
+    r.onload=()=>showPrev(r.result);
+    r.readAsDataURL(f);
+    sheet.style.height="0";
+  };
+}
+handleFile(filePick);
+handleFile(photoPick);
+handleFile(cameraPick);
+
+let startY=0,curY=0,sh=0;
+const maxH=500;
+const midH=330;
+
+document.getElementById("plus").onclick=()=>sheet.style.height=midH+"px";
+
+sheet.addEventListener("touchstart",(e)=>{
+  startY=e.touches[0].clientY;
+  sh=parseFloat(sheet.style.height);
+});
+
+sheet.addEventListener("touchmove",(e)=>{
+  curY=e.touches[0].clientY;
+  let d=startY-curY;
+  let nh=sh+d;
+  nh=Math.max(0,Math.min(maxH,nh));
+  sheet.style.height=nh+"px";
+});
+
+sheet.addEventListener("touchend",()=>{
+  let h=parseFloat(sheet.style.height);
+  if(h<120)sheet.style.height="0";
+  else if(h<380)sheet.style.height=midH+"px";
+  else sheet.style.height=maxH+"px";
+});
+
+sheet.addEventListener("mousedown",(e)=>{
+  if(e.target.classList.contains('sheet-handle')){
+    startY=e.clientY;
+    sh=parseFloat(sheet.style.height);
+    const mm=(e)=>{
+      curY=e.clientY;
+      let d=startY-curY;
+      let nh=sh+d;
+      nh=Math.max(0,Math.min(maxH,nh));
+      sheet.style.height=nh+"px";
+    };
+    const mu=()=>{
+      document.removeEventListener("mousemove",mm);
+      document.removeEventListener("mouseup",mu);
+      let h=parseFloat(sheet.style.height);
+      if(h<120)sheet.style.height="0";
+      else if(h<380)sheet.style.height=midH+"px";
+      else sheet.style.height=maxH+"px";
+    };
+    document.addEventListener("mousemove",mm);
+    document.addEventListener("mouseup",mu);
+  }
+});
+
+function showTyping(){
+  if(typingEl)typingEl.remove();
+  typingEl=document.createElement("div");
+  typingEl.className="typing";
+  typingEl.innerHTML=`<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
+  chat.appendChild(typingEl);
+  chat.scrollTop=chat.scrollHeight;
+  return typingEl;
+}
+
+function rmTyping(){
+  if(typingEl){
+    typingEl.remove();
+    typingEl=null;
+  }
+}
+
+async function callAI(m){
+  try{
+    const q=encodeURIComponent(`${PROMPT}\n\nUser: ${m}`);
+    const r=await fetch(`https://mionapi.ir/api/ai/gpt4o.php?q=${q}`,{
+      method:'GET',
+      headers:{'Accept':'application/json'}
+    });
+    if(!r.ok)throw new Error(`API Error: ${r.status}`);
+    const d=await r.json();
+    if(d.result||d.response||d.answer||d.text){
+      return d.result||d.response||d.answer||d.text;
+    }else if(typeof d==='string'){
+      return d;
+    }else{
+      return JSON.stringify(d);
+    }
+  }catch(e){
+    console.error('API Error:',e);
+    return "Error getting response. Please try again.";
+  }
+}
+
+function createTools(id,t){
+  const td=document.createElement("div");
+  td.className="tools";
+  const cp=document.createElement("div");
+  cp.className="tool";
+  cp.innerHTML='<i class="ri-file-copy-line"></i>';
+  cp.title="Copy";
+  cp.onclick=()=>{
+    navigator.clipboard.writeText(t).then(()=>{
+      const o=cp.innerHTML;
+      cp.innerHTML='<i class="ri-check-line"></i>';
+      cp.style.background="rgba(34,197,94,0.2)";
+      cp.style.color="#22c55e";
+      cp.style.borderColor="rgba(34,197,94,0.3)";
+      setTimeout(()=>{
+        cp.innerHTML=o;
+        cp.style.background="";
+        cp.style.color="";
+        cp.style.borderColor="";
+      },2000);
+    });
+  };
+  const sh=document.createElement("div");
+  sh.className="tool";
+  sh.innerHTML='<i class="ri-share-forward-line"></i>';
+  sh.title="Share";
+  sh.onclick=()=>{
+    if(navigator.share){
+      navigator.share({
+        title:'AI Response',
+        text:t.substring(0,100)+'...',
+        url:window.location.href
+      });
+    }else{
+      navigator.clipboard.writeText(t).then(()=>{
+        alert('Copied!');
+      });
+    }
+  };
+  const bm=document.createElement("div");
+  bm.className="tool";
+  bm.innerHTML='<i class="ri-bookmark-line"></i>';
+  bm.title="Save";
+  bm.onclick=()=>{
+    const ms=JSON.parse(localStorage.getItem('saved')||'[]');
+    ms.push({id:Date.now(),text:t,time:new Date().toLocaleString()});
+    localStorage.setItem('saved',JSON.stringify(ms));
+    const o=bm.innerHTML;
+    bm.innerHTML='<i class="ri-check-line"></i>';
+    bm.style.background="rgba(34,197,94,0.2)";
+    bm.style.color="#22c55e";
+    bm.style.borderColor="rgba(34,197,94,0.3)";
+    setTimeout(()=>{
+      bm.innerHTML=o;
+      bm.style.background="";
+      bm.style.color="";
+      bm.style.borderColor="";
+    },2000);
+  };
+  td.appendChild(cp);
+  td.appendChild(sh);
+  td.appendChild(bm);
+  return td;
+}
+
+async function send(){
+  let v=txt.value.trim();
+  const p=prevCont.querySelector(".prev");
+  if(v===""&&!p)return;
+  const md=document.createElement("div");
+  md.className="msg-u";
+  const b=document.createElement("div");
+  b.className="b";
+  if(p){
+    const s=p.querySelector("img").src;
+    b.innerHTML=`${v?wrapEmojis(v):"Image"}${v?'<br><br>':''}<img src="${s}" style="max-width:200px;border-radius:12px;margin-top:8px;">`;
+    p.remove();
+  }else{
+    b.innerHTML=wrapEmojis(v);
+  }
+  const tm=document.createElement("div");
+  tm.className="time";
+  tm.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  md.appendChild(b);
+  md.appendChild(tm);
+  chat.appendChild(md);
+  txt.value="";
+  txt.style.height="auto";
+  chat.scrollTop=chat.scrollHeight;
+  if(v||p){
+    showTyping();
+    try{
+      const q=p?`${v?v+" (image)":"Describe image"}`:v;
+      const ar=await callAI(q);
+      rmTyping();
+      const ad=document.createElement("div");
+      ad.className="msg-a";
+      const ab=document.createElement("div");
+      ab.className="b";
+      ab.innerHTML=wrapEmojis(ar);
+      const tls=createTools(Date.now().toString(),ar);
+      ab.appendChild(tls);
+      const at=document.createElement("div");
+      at.className="time";
+      at.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+      ad.appendChild(ab);
+      ad.appendChild(at);
+      chat.appendChild(ad);
+      chat.scrollTop=chat.scrollHeight;
+    }catch(e){
+      rmTyping();
+      const ed=document.createElement("div");
+      ed.className="msg-a";
+      const eb=document.createElement("div");
+      eb.className="b";
+      eb.textContent="Error. Try again.";
+      eb.style.color="#ef4444";
+      ed.appendChild(eb);
+      chat.appendChild(ed);
+      chat.scrollTop=chat.scrollHeight;
+    }
+  }
+}
+
+document.querySelectorAll(".sug").forEach(b=>{
+  b.addEventListener("click",()=>{
+    txt.value=b.dataset.text;
+    txt.style.height="auto";
+    txt.style.height=Math.min(txt.scrollHeight,200)+"px";
+    txt.focus();
+  });
+});
+
+document.querySelector(".btn-send").onclick=send;
+
+txt.addEventListener("keydown",(e)=>{
+  if(e.key==="Enter"&&!e.shiftKey){
+    e.preventDefault();
+    send();
+  }
+});
+
+document.addEventListener("click",(e)=>{
+  if(sheet.style.height!=="0px"&&!sheet.contains(e.target)&&e.target.id!=="plus"){
+    sheet.style.height="0px";
+  }
+});
+</script>
+</body>
+</html>
